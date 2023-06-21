@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
   onChange: (index: number) => void;
@@ -28,7 +28,7 @@ export const Tabs = (props: Props) => {
     [onChange],
   );
 
-  //divide a given width into equal parts of items.length
+  // Divide a given width into equal parts of items.length
   const itemWidth = useMemo(() => {
     const width = Dimensions.get('window').width;
     return width / items.length;
@@ -65,7 +65,7 @@ const TabItem = (props: TabItemProps) => {
   const minWidth = useMemo(() => Math.max(itemWidth, 80), [itemWidth]);
   return (
     <TouchableOpacity style={[styles.item, isActive ? styles.selectedItem : {}, {minWidth}]} onPress={() => onPress(index)}>
-      <Small text={text} isBold={isActive} color={Colors.Primary} textAlign="center" />
+      <Text style={styles.itemText}>{text}</Text>
     </TouchableOpacity>
   );
 };
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
   },
   selectedItem: {
     borderBottomWidth: 2,
-    borderBottomColor: Colors.Primary,
   },
   itemText: {
     alignSelf: 'center',
+    textAlign: 'center',
   },
 });
