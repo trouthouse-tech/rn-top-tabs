@@ -15,7 +15,7 @@ export const App = () => {
       {selectedTab === 3 && <TabFour />}
       {selectedTab === 4 && <TabFive />}
     </View>
-  )
+  );
 };
 
 const TabOne = () => {
