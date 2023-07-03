@@ -1,5 +1,12 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {Dimensions, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 type Props = {
   onChange: (index: number) => void;
@@ -18,9 +25,18 @@ export const Tabs = (props: Props) => {
       onChange(index);
 
       if (scrollRef.current) {
+        /**
+         * If you have a lot of tabs, then you need to make sure that tabs on the edges
+         * are shown as the User scrolls through the tabs.
+         *
+         * Without this logic, the final tabs may never be pressed on unless the User
+         * knows to manually scroll to the end of the tabs list.
+         */
         if (index > 2) {
+          // Scroll to the 'end' of the tabs list
           scrollRef.current.scrollToEnd({animated: true});
         } else {
+          // Scroll to the 'start' of the tabs list
           scrollRef.current.scrollTo({x: 0, animated: true});
         }
       }
@@ -43,7 +59,14 @@ export const Tabs = (props: Props) => {
         horizontal
         showsHorizontalScrollIndicator={false}>
         {items.map((item, index) => (
-          <TabItem key={index} text={item} activeTab={activeTab} index={index} onPress={handleTabChange} itemWidth={itemWidth} />
+          <TabItem
+            key={index}
+            text={item}
+            activeTab={activeTab}
+            index={index}
+            onPress={handleTabChange}
+            itemWidth={itemWidth}
+          />
         ))}
       </ScrollView>
     </View>
@@ -64,7 +87,9 @@ const TabItem = (props: TabItemProps) => {
 
   const minWidth = useMemo(() => Math.max(itemWidth, 80), [itemWidth]);
   return (
-    <TouchableOpacity style={[styles.item, isActive ? styles.selectedItem : {}, {minWidth}]} onPress={() => onPress(index)}>
+    <TouchableOpacity
+      style={[styles.item, isActive ? styles.selectedItem : {}, {minWidth}]}
+      onPress={() => onPress(index)}>
       <Text style={styles.itemText}>{text}</Text>
     </TouchableOpacity>
   );
